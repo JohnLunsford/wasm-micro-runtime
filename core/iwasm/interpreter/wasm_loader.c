@@ -4052,7 +4052,7 @@ check_wasi_abi_compatibility(const WASMModule *module,
 
     memory = wasm_loader_find_export(module, "", "memory", EXPORT_KIND_MEMORY,
                                      error_buf, error_buf_size);
-    if (!memory
+    if (!memory && module->import_memory_count == 0
 #if WASM_ENABLE_LIB_WASI_THREADS != 0
         /*
          * with wasi-threads, it's still an open question if a memory
@@ -4063,7 +4063,7 @@ check_wasi_abi_compatibility(const WASMModule *module,
          *
          * Note: this code assumes the number of memories is at most 1.
          */
-        && module->import_memory_count == 0
+        
 #endif
     ) {
         set_error_buf(error_buf, error_buf_size,
